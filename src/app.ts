@@ -1,28 +1,57 @@
-import express = require('express');
+
+import express, { Request, Response } from "express";
 import * as dotenv from "dotenv";
 import cors from "cors";
 import helmet from "helmet";
-import { itemsRouter } from "./items/items.router";
+import mongoose from "mongoose";
+
 import { errorHandler } from "./middleware/error.middleware";
 import { notFoundHandler } from "./middleware/not-found.middleware";
+import { Routes } from './router/router';
+class App {
+    public app: express.Application = express();
+    public routePrv: Routes = new Routes();
+    public mongoUrl: string = 'mongodb://localhost:27017/mongoose';
 
-dotenv.config();
+    constructor() {
+        this.config();
+        this.mongoSetup();
+        this.routePrv.routes(this.app);
 
-// Create a new express app instance
-const app: express.Application = express();
-const post = 3000;
+        dotenv.config();
+        this.app.use(helmet());
+        this.app.use(cors());
+        this.app.use(express.json());
+        this.app.use(errorHandler);
+        this.app.use(notFoundHandler);
+    }
 
-app.use(helmet());
-app.use(cors());
-app.use(express.json());
-app.use("/api/menu/items", itemsRouter);
-app.use(errorHandler);
-app.use(notFoundHandler);
+    private mongoSetup() {
+        // Connect to MongoDB
+        mongoose.connect(this.mongoUrl, {
+            useCreateIndex: true,
+            useNewUrlParser: true,
+            useUnifiedTopology: true
+        }, () => {
+            console.log("Connected to Mongoose")
+            // mongoose.connection.db.listCollections().toArray(function (err, names) {
+            //     console.log(names); // [{ name: 'dbname.myCollection' }]
+            //     module.exports.Collection = names;
+            // });
+        });
+    }
 
-app.get('/', (req, res) => {
-    res.send('Hello World!');
-});
+    private config(): void {
+        this.app.use((req, res, next) => {
+            res.header("Access-Control-Allow-Origin", "*");
+            res.header("Access-Control-Allow-Methods", "PUT, POST, GET, DELETE, PATCH, OPTIONS");
+            res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+            // res.header("Access-Control-Allow-Credentials", "true");
+            // res.header("Access-Control-Max-Age", "1800");
+            next();
+        });
+        this.app.use(express.static('public'));
+    }
+}
 
-app.listen(post, () => {
-    console.log('App is listening on port ' + post +'!');
-});
+export default new App().app;
