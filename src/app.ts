@@ -11,13 +11,14 @@ import { Routes } from './router/router';
 class App {
     public app: express.Application = express();
     public routePrv: Routes = new Routes();
-    public mongoUrl: string = 'mongodb://localhost:27017/mongoose';
+    public mongoUrl: any = "";
 
     constructor() {
+        dotenv.config();
+        this.mongoUrl = process.env.DB_URL;
         this.config();
         this.mongoSetup();
 
-        dotenv.config();
         this.app.use(helmet());
         this.app.use(cors());
         this.app.use(express.json());
@@ -53,7 +54,7 @@ class App {
             // res.header("Access-Control-Max-Age", "1800");
             next();
         });
-        // this.app.use(express.static('public'));
+        this.app.use(express.static('public'));
     }
 }
 

@@ -15,16 +15,8 @@ export class Routes {
         // Contact 
         app.route('/mongoose')
         .get(this.sampleController.findall)
-        .post(this.sampleController.addnewMovie);
-
-        // Contact detail
-        // app.route('/login')
-        // .post(this.sampleController.getLogin)
-        // .get(this.sampleController.getContactWithID)
-        // .put(this.sampleController.updateContact)
-        // .delete(this.sampleController.deleteContact)
-
-        // app.route('/FSsearch')
-        // .post(this.sampleController.FSsendRequest)
+        .post(this.sampleController.addnewMovie)
+        .put(this.sampleController.updateMovie)
+        .delete(this.sampleController.deleteMovie);
     }
 }
