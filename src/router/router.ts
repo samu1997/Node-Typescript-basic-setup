@@ -1,9 +1,10 @@
 import {Request, Response} from "express";
-import { mongooseRouter } from '../mongoose-route/mongoose.router';
-
+import { CRUDRouter } from '../crud/crud.router';
+import { students } from '../more-function/student/student';
 export class Routes { 
 
-    public sampleController: mongooseRouter = new mongooseRouter() 
+    public crudController: CRUDRouter = new CRUDRouter();
+    public studentsController: students = new students();
 
     public routes(app:any): void {   
         app.route('/').get((req: Request, res: Response) => {            
@@ -12,11 +13,17 @@ export class Routes {
             })
         })
         
-        // Contact 
-        app.route('/mongoose')
-        .get(this.sampleController.findall)
-        .post(this.sampleController.addnewMovie)
-        .put(this.sampleController.updateMovie)
-        .delete(this.sampleController.deleteMovie);
+        // CRUD 
+        app.route('/crud')
+        .get(this.crudController.findall)
+        .post(this.crudController.addnewMovie)
+        .put(this.crudController.updateMovie)
+        .delete(this.crudController.deleteMovie);
+
+        // Student Routes
+        app.route('/student/getAllStudent').post(this.studentsController.getAllStudentData);
+        app.route('/student/getStudentById').post(this.studentsController.getStudentById);
+        app.route('/student/getStudentByCustomField').post(this.studentsController.getStudentByCustomField);
+        app.route('/student/addStudent').post(this.studentsController.addStudentData);
     }
 }

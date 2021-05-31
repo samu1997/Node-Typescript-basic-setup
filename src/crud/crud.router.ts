@@ -2,10 +2,10 @@
 import * as mongoose from 'mongoose';
 import { Request, Response } from 'express';
 
-import { sampleSchema } from "./mongoose.schema";
+import { crudSchema } from "./crud.schema";
 
-const schema_movie = mongoose.model('movie', sampleSchema);
-export class mongooseRouter {
+const schema_movie = mongoose.model('movie', crudSchema);
+export class CRUDRouter {
     public findall(req: Request, res: Response) {
         schema_movie.find({}, (err, aaa: any) => {
             res.json({ status: true, data: aaa });
