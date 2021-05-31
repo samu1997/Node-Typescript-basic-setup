@@ -15,7 +15,7 @@ export class Routes {
         // Contact 
         app.route('/mongoose')
         .get(this.sampleController.findall)
-        // .post(this.sampleController.addNewContact);
+        .post(this.sampleController.addnewMovie);
 
         // Contact detail
         // app.route('/login')

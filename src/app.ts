@@ -16,12 +16,15 @@ class App {
     constructor() {
         this.config();
         this.mongoSetup();
-        this.routePrv.routes(this.app);
 
         dotenv.config();
         this.app.use(helmet());
         this.app.use(cors());
         this.app.use(express.json());
+        this.app.use(express.urlencoded({ extended: true }));
+
+        this.routePrv.routes(this.app);
+
         this.app.use(errorHandler);
         this.app.use(notFoundHandler);
     }
@@ -50,7 +53,7 @@ class App {
             // res.header("Access-Control-Max-Age", "1800");
             next();
         });
-        this.app.use(express.static('public'));
+        // this.app.use(express.static('public'));
     }
 }
 
