@@ -1,10 +1,12 @@
 import {Request, Response} from "express";
 import { CRUDRouter } from '../crud/crud.router';
 import { students } from '../more-function/student/student';
+import { teachers } from '../more-function/teacher/teacher';
 export class Routes { 
 
     public crudController: CRUDRouter = new CRUDRouter();
     public studentsController: students = new students();
+    public teachersController: teachers = new teachers();
 
     public routes(app:any): void {   
         app.route('/').get((req: Request, res: Response) => {            
@@ -25,5 +27,8 @@ export class Routes {
         app.route('/student/getStudentById').post(this.studentsController.getStudentById);
         app.route('/student/getStudentByCustomField').post(this.studentsController.getStudentByCustomField);
         app.route('/student/addStudent').post(this.studentsController.addStudentData);
+
+        // Teachers Routes
+        app.route('/teacher/getAllTeachers').post(this.teachersController.getAllteachersData);
     }
 }
