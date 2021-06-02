@@ -6,6 +6,8 @@ export const studentSchema = new Schema({
     name: { type: String },
     age: { type: Number },
     roll_no: { type: Number },
+    corrseponding_address: { type: String },
+    current_address: { type: String },
     contact: [{ name: String, number: Number, relation: String }],
     gender: { type: String },
     emailId: { type: String },

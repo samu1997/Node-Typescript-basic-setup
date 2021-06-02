@@ -2,10 +2,10 @@ import * as mongoose from 'mongoose';
 import { Request, Response } from 'express';
 import * as winston from 'winston';
 
-import { studentSchema } from "./student.schema";
+import { adminSchema } from "./admin.schema";
 
 const atob = require('atob');
-const schema_student = mongoose.model('student', studentSchema);
+const schema_admin = mongoose.model('admin', adminSchema);
 const { combine, timestamp, json } = winston.format;
 const logger = winston.createLogger({
     level: 'error',
@@ -22,7 +22,7 @@ export class students {
         let token: any = req.get('Authorization');
         let auth = (token != '') ? JSON.parse(atob(token)) : null;
         if (auth != null && auth.email == "udgiri88@gmail.com") {
-            schema_student.find({}, (error: any, findData) => {
+            schema_admin.find({}, (error: any, findData) => {
                 if (findData.length > 0) {
                     res.json({ status: true, message: "Students " + findData.length + " data found", data: findData });
                 } else {
@@ -36,11 +36,11 @@ export class students {
     }
 
     public addStudentData(req: Request, res: Response) {
-        let reqBody: any = new schema_student(req.body);
+        let reqBody: any = new schema_admin(req.body);
         let token: any = req.get('Authorization');
         let auth = (token != '') ? JSON.parse(atob(token)) : null;
         if (auth != null && auth.email == "udgiri88@gmail.com") {
-            schema_student.find({ emailId: reqBody.emailId }, (finderror: any, findData) => {
+            schema_admin.find({ emailId: reqBody.emailId }, (finderror: any, findData) => {
                 if (findData.length > 0) {
                     res.json({ status: false, message: "Students emailID data already exist.", data: [] });
                 } else {
